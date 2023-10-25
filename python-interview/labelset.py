@@ -6,7 +6,7 @@ class Case:
     def __init__(self, case_id: str):
         self.dp_id = case_id
         self.events = []
-        self.state_by_branch = {}
+        self.state_by_branch = State
 
     def __repr__(self):
         return f"Case({self.dp_id}, {self.events})"
@@ -116,3 +116,23 @@ class Labelset:
                 case.state_by_branch[merged_branch].is_submitted = False
 
         case.events.append((merged_branch, td))
+
+
+
+
+
+if __name__ == "__main__":
+    case = Case("dp_1")
+    print(case)
+
+    state = State("td_1")
+    print(state)
+
+
+    labelset = Labelset()
+    labelset.create_case("dp_1")
+    labelset.annotate_case("dp_1", "user_1", "td_1")
+    # labelset.annotate_case("dp_1", "user_2", "td_2")
+    case = labelset.get_case("dp_1")
+    print(case)
+
