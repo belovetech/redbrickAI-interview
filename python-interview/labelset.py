@@ -10,10 +10,10 @@ class Case:
         self.state_by_branch = {}
 
     def __repr__(self):
-        return f"Case({self.dp_id}, {self.events})"
+        return f"Case({self.__dict__})"
 
     def __str__(self):
-        return str({"dp_id": self.dp_id, "events": self.events})
+        return str(self.__dict__)
 
 
 class Event:
@@ -24,16 +24,16 @@ class Event:
         self.action = action
 
     def __repr__(self):
-        return f"Event({self.user}, {self.td_id}, {self.action})"
+        return f"Event({self.__dict__})"
 
     def __str__(self):
-        return str({"user": self.user, "td_id": self.td_id, "action": self.action})
+        return str(self.__dict__)
 
 
 class State:
     """A state is a set of actions."""
-    def __init__(self, td_id: str) -> None:
-        self.latest_td_id = td_id
+    def __init__(self, branch: str) -> None:
+        self.latest_td_id = branch
         self.is_submitted = False
         self.approved_reviews = 0
         self.rejected_reviews = 0
@@ -41,10 +41,10 @@ class State:
         self.is_active = True
 
     def __repr__(self):
-        return f"State({self.latest_td_id}, {self.is_submitted}, {self.approved_reviews}, {self.rejected_reviews}, {self.needs_updates}, {self.is_active})"
+        return f"State({self.__dict__})"
 
     def __str__(self):
-        return str({"latest_td_id": self.latest_td_id, "is_submitted": self.is_submitted, "approved_reviews": self.approved_reviews, "rejected_reviews": self.rejected_reviews, "needs_updates": self.needs_updates, "is_active": self.is_active})
+        return str(self.__dict__)
 
 
 class Labelset:
@@ -117,7 +117,7 @@ class Labelset:
 
         case.events.append(Event(user, td, "review_failed"))
 
-    def merge_branches(self, dp_id:str, users:str, merged_branch:str, td:str)-> None:
+    def merge_branches(self, dp_id:str, users:[str], merged_branch:str, td:str)-> None:
         """Merge branches."""
         case = self.get_case(dp_id)
         if not case:
@@ -135,6 +135,7 @@ class Labelset:
 
 
     def get_cases(self):
+        """Get cases."""
         _dict = {}
         for case in self.cases:
             _dict[case] = {}
@@ -148,10 +149,10 @@ class Labelset:
         return json.dumps(_dict, indent=2)
 
     def __repr__(self):
-        return f"Labelset({self.cases})"
+        return f"Labelset({self.__dict__})"
 
     def __str__(self):
-        return str({"cases": self.cases})
+        return str(self.__dict__)
 
 
 
@@ -176,7 +177,22 @@ if __name__ == "__main__":
     cases = labelset.get_cases()
     print(cases)
 
-    cases_json = json.loads(cases)
-    print(cases_json)
+    # cases_json = json.loads(cases)
+    # print(cases_json)
 
 
+    # Case
+    case = Case("test1")
+    print(f"Case: {case}")
+
+    # Event
+    event = Event("user1", "td11", "annotate")
+    print(f"Event: {event}")
+
+    # State
+    state = State("td11")
+    print(f"State: {state}")
+
+    # Labelset
+    labelset = Labelset()
+    print(f"Labelset: {labelset}")
